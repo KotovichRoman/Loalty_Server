@@ -13,55 +13,66 @@ enum Role {
 }
 
 model User {
-  id                      Int           @id @default(autoincrement())
-  login                   String        @unique @db.VarChar(64)
-  email                   String        @unique @db.VarChar(64)
-  password                String        @db.VarChar(256)
+  id       Int    @id @default(autoincrement())
+  login    String @unique @db.VarChar(64)
+  email    String @unique @db.VarChar(64)
+  password String @db.VarChar(256)
 
-  role                    Role
+  role Role
 
-  organizations           Organization[]
-  favoritesOrganization   Favorites_Organization[]
-  score                   Score[]
+  organizations         Organization[]
+  favoritesOrganization Favorites_Organization[]
+  score                 Score[]
+  Rating                Rating[]
 }
 
 model Organization {
-  id                      Int           @id @default(autoincrement())
-  name                    String        @unique @db.VarChar(64)
-  rating                  Float 
-  ownerId                 Int
+  id      Int    @id @default(autoincrement())
+  name    String @unique @db.VarChar(64)
+  ownerId Int
 
-  owner                   User          @relation(fields: [ownerId], references: [id])
+  owner User @relation(fields: [ownerId], references: [id])
 
-  coupons                 Coupon[]
-  favoritesOrganization   Favorites_Organization[]
-  score                   Score[]
+  coupons               Coupon[]
+  favoritesOrganization Favorites_Organization[]
+  score                 Score[]
+  Rating                Rating[]
 }
 
 model Coupon {
-  id                      Int           @id @default(autoincrement())
-  name                    String        @unique @db.VarChar(64)
-  price                   Int 
-  organizationId          Int
+  id             Int    @id @default(autoincrement())
+  name           String @unique @db.VarChar(64)
+  price          Int
+  organizationId Int
 
-  organization            Organization  @relation(fields: [organizationId], references: [id])
+  organization Organization @relation(fields: [organizationId], references: [id])
 }
 
 model Favorites_Organization {
-  id                      Int           @id @default(autoincrement())
-  userId                  Int
-  organizationId          Int
+  id             Int @id @default(autoincrement())
+  userId         Int
+  organizationId Int
 
-  user                    User          @relation(fields: [userId], references: [id])
-  organization            Organization  @relation(fields: [organizationId], references: [id])
+  user         User         @relation(fields: [userId], references: [id])
+  organization Organization @relation(fields: [organizationId], references: [id])
 }
 
 model Score {
-  id                      Int           @id @default(autoincrement())
-  count                   Int
-  userId                  Int
-  organizationId          Int
+  id             Int @id @default(autoincrement())
+  count          Int
+  userId         Int
+  organizationId Int
 
-  user                    User          @relation(fields: [userId], references: [id])
-  organization            Organization  @relation(fields: [organizationId], references: [id])
+  user         User         @relation(fields: [userId], references: [id])
+  organization Organization @relation(fields: [organizationId], references: [id])
+}
+
+model Rating {
+  id             Int @id @default(autoincrement())
+  estimation     Int
+  userId         Int
+  organizationId Int
+
+  user         User         @relation(fields: [userId], references: [id])
+  organization Organization @relation(fields: [organizationId], references: [id])
 }

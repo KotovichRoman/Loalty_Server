@@ -4,6 +4,7 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { hashWithSHA256 } from 'src/util/hashing-password.util';
 import { RegistrationUserDto } from './dto/registration-user.dto';
 import { Role } from '@prisma/client';
+import { generateQRCode } from 'src/util/qr-generator.util';
 
 @Injectable()
 export class UserService {
@@ -33,5 +34,9 @@ export class UserService {
         role: Role.User,
       },
     });
+  }
+
+  async generateCarQR(id: number): Promise<Buffer> {
+    return generateQRCode(id);
   }
 }
